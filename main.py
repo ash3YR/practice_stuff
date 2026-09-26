@@ -12,7 +12,7 @@ app = (
 
 @app.get("/")  # decorator hai jo function ko route ke sath bind karta hai
 def home():
-    return "Welcome to FastAPI bahu"
+    return "Welcome to FastAPI beti"
 
 
 @app.get("/greet/{name}")  # path parameter
@@ -62,3 +62,23 @@ def create_product(
         "status": "successfully created product",
         "product": products,
     }  # product object ko retrn kar raha hai
+
+
+@app.put("/products/{id}")  # route for updating a product
+def updata_product(id: int, product_data: productdto):
+    for product in products:
+        if product["id"] == id:
+            product.update(product_data.model_dump())
+            return {"status": "successfully updated product", "product": product}
+
+    return {"error": "Product not found"}
+
+
+@app.delete("/products/{id}")  # route for deleting a product
+def delete_product(id: int):
+    for product in products:
+        if product["id"] == id:
+            products.remove(product)
+            return {"status": "successfully deleted product", "product": product}
+
+    return {"error": "Product not found"}
